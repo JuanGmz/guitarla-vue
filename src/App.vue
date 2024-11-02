@@ -10,8 +10,10 @@
   //     guitarras : db
   // })
 
+  // states
   // ref Funciona para Arrays, Booleans y Strings, cuándo se declara un ref se tiene que colocar un valor inicial, para acceder a una propiedad es con “.value” para reescribir es igual.
   const guitarras = ref([])
+  const carrito = ref([])
 
   // Con onMounted una vez que el componente este listo se va a cargar y a ejecutar.
   onMounted(() => {
@@ -23,13 +25,25 @@
   })
 
   const agregarCarrito = (guitarra) => {
-    console.log('Se agrego la guitarra ', guitarra)
+    // Buscar si la guitarra ya existe en el carrito
+    const existeCarrito = carrito.value.findIndex(producto => producto.id === guitarra.id)
+
+    if (existeCarrito >= 0) {
+      carrito.value[existeCarrito].cantidad++
+    } else {
+      // Cantidad de la guitarra al agregar al carrito
+      guitarra.cantidad = 1
+      // Agregar la guitarra al carrito
+      carrito.value.push(guitarra)
+    }
   }
 </script>
 
 <template>
   <!-- Componente de header -->
-  <Header />
+  <Header 
+    v-bind:carrito="carrito"
+  />
   <!-- Fin Componente -->
 
   <main class="container-xl mt-5">

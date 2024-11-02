@@ -22,14 +22,13 @@
         <div class="col-8">
             <h3 class="text-black fs-4 fw-bold text-uppercase">{{ guitarra.nombre }}</h3>
             <p>{{guitarra.descripcion}}</p>
-            <p>Cantidad: {{ numero }}</p>
             <p class="fw-black text-primary fs-3">${{ guitarra.precio }}</p>
             <!-- Con v-on se hace dinámico el evento y se emite el evento a otro componente -->
             <!-- Para pasar información al componente padre se envía en el emit -->
             <button 
                 type="button"
                 class="btn btn-dark w-100"
-                v-on:click="$emit('agregar-carrito', guitarra.nombre)"
+                v-on:click="$emit('agregar-carrito', guitarra)"
             >
             Agregar al Carrito</button>
         </div>
