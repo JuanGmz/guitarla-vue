@@ -1,9 +1,23 @@
 <script setup>
+import { computed } from 'vue'
+
   const props = defineProps({
     carrito: {
       type: Array,
       required: true
+    },
+    guitarra: {
+      type: Object,
+      required: true
     }
+  })
+
+  defineEmits(['incrementar-cantidad', 'decrementar-cantidad', 'agregar-carrito'])
+
+  // Funcion para incrementar la cantidad del total
+  const totalPagar = computed(() => {
+    // Calcula el total del carrito, recorriendo el array de carrito y multiplicando el precio por la cantidad
+    return props.carrito.reduce((total, producto) => total + (producto.precio * producto.cantidad), 0)
   })
 </script>
 
@@ -51,11 +65,17 @@
                         ${{ producto.precio }}
                       </td>
                       <td class="flex align-items-start gap-4">
-                        <button type="button" class="btn btn-dark">
+                        <button 
+                          type="button" 
+                          class="btn btn-dark"
+                          @click="$emit('decrementar-cantidad', producto.id)">
                           -
                         </button>
                         {{ producto.cantidad }}
-                        <button type="button" class="btn btn-dark">
+                        <button 
+                          type="button" 
+                          class="btn btn-dark"
+                          @click="$emit('incrementar-cantidad', producto.id)">
                           +
                         </button>
                       </td>
@@ -68,7 +88,7 @@
                   </tbody>
                 </table>
 
-                <p class="text-end">Total pagar: <span class="fw-bold">$899</span></p>
+                <p class="text-end">Total pagar: <span class="fw-bold">${{ totalPagar }}</span></p>
                 <button class="btn btn-dark w-100 mt-3 p-2">Vaciar Carrito</button>
               </div>
             </div>
@@ -78,10 +98,14 @@
 
       <div class="row mt-5">
         <div class="col-md-6 text-center text-md-start pt-5">
-          <h1 class="display-2 fw-bold">Modelo VAI</h1>
-          <p class="mt-5 fs-5 text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugit blanditiis molestias omnis enim expedita aliquam architecto dolorem, explicabo sequi ea. Nulla ipsum mollitia officiis eligendi numquam accusamus totam architecto reiciendis.</p>
-          <p class="text-primary fs-1 fw-black">$299</p>
-          <button type="button" class="btn fs-4 bg-primary text-white py-2 px-5">Agregar al Carrito</button>
+          <h1 class="display-2 fw-bold">Modelo {{ guitarra.nombre }}</h1>
+          <p class="mt-5 fs-5 text-white">{{ guitarra.descripcion }}</p>
+          <p class="text-primary fs-1 fw-black">${{ guitarra.precio }}</p>
+          <button 
+            type="button" 
+            class="btn fs-4 bg-primary text-white py-2 px-5"
+            @click="$emit('agregar-carrito', guitarra)"
+          >Agregar al Carrito</button>
         </div>
       </div>
     </div>
