@@ -57,6 +57,15 @@
     // Incrementar la cantidad
     carrito.value[index].cantidad++
   }
+
+  const eliminarProducto = (id) => {
+    // Eliminar el carrito con filter que recorre el array y retorna un nuevo array eliminando el que coincida con el id
+    carrito.value = carrito.value.filter(producto => producto.id !== id)
+  }
+
+  const vaciarCarrito = () => {
+    carrito.value = []
+  }
 </script>
 
 <template>
@@ -67,6 +76,8 @@
     v-on:decrementar-cantidad="decrementarCantidad"
     v-on:incrementar-cantidad="incrementarCantidad"
     v-on:agregar-carrito="agregarCarrito"
+    v-on:eliminar-producto="eliminarProducto"
+    v-on:vaciar-carrito="vaciarCarrito"
   />
   <!-- Fin Componente -->
 
