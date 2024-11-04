@@ -35,7 +35,11 @@ import { computed } from 'vue'
             <img class="img-fluid" src="/img/carrito.png" alt="imagen carrito" />
 
             <div id="carrito" class="bg-white p-3">
-              <p v-if="carrito.length === 0" class="text-center">El carrito esta vacio</p>
+              <p 
+                class="text-center"
+                v-if="carrito.length === 0" 
+              >El carrito esta vacio
+              </p>
               <div v-else>
                 <table class="w-100 table">
                   <thead>

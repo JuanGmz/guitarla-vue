@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, reactive, onMounted } from 'vue'
+  import { ref, reactive, onMounted, watch } from 'vue'
   import Header from './components/Header.vue'
   import Footer from './components/Footer.vue'
   import Guitarra from './components/Guitarra.vue'
@@ -16,6 +16,15 @@
   const carrito = ref([])
   const guitarra = ref({})
 
+  // El primer paramétro que se le pasa es el state el cuál va a estar observando para cambios
+  watch(carrito, () => {
+    // Cuando se agregue un elemento se guardará en localstorage
+    localStorageCarrito()
+  }, {
+    // revisa contenido por contenido del arreglo u objeto y observa si cambia
+    deep: true
+  })
+
   // Con onMounted una vez que el componente este listo se va a cargar y a ejecutar.
   onMounted(() => {
     // reactive
@@ -24,7 +33,19 @@
     // ref
     guitarras.value = db
     guitarra.value = db[3]
+    // traer el valor del carrito de la funcion localstorage para poder recuperar los items guardados
+    const carritoStorage = localStorage.getItem('carrito')
+    
+    // Validar que haya items en el carrito y convertir lo que hay a un arreglo
+    if (carritoStorage) {
+      carrito.value = JSON.parse(carritoStorage)
+    }
   })
+
+  const localStorageCarrito = () => {
+    // Almacenar el valor del carrito en un JSON en localstorage, recibe el nombre con el que se recupera y el valor a guardar 
+    localStorage.setItem('carrito', JSON.stringify(carrito.value))
+  }
 
   const agregarCarrito = (guitarra) => {
     // Buscar si la guitarra ya existe en el carrito
